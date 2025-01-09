@@ -93,6 +93,24 @@ function isIsoscelesTriangle(a, b, c) {
   return isIsosceles(a, b, c) || isIsosceles(b, c, a) || isIsosceles(c, a, b);
 }
 
+function stringRepeat(n, str) {
+  let res = '';
+  for (let i = 0; i < n; i += 1) {
+    res += str;
+  }
+  return res;
+}
+function createRomanNumber(n, numerals) {
+  const [a, b, c] = numerals;
+  if (n === 0) return '';
+  if (n < 4) return stringRepeat(n, a);
+  if (n === 4) return a + b;
+  if (n === 5) return b;
+  if (n === 6) return b + a;
+  if (n === 9) return a + c;
+  return b + stringRepeat(n - 5, a);
+}
+
 /**
  * Converts a number to Roman numerals. The number will be between 1 and 39.
  * In this task, the use of methods of the String and Array classes is not allowed.
@@ -107,8 +125,14 @@ function isIsoscelesTriangle(a, b, c) {
  *  10  => X
  *  26  => XXVI
  */
-function convertToRomanNumerals(/* num */) {
-  throw new Error('Not implemented');
+function convertToRomanNumerals(num) {
+  if (num < 10) {
+    return createRomanNumber(num, ['I', 'V', 'X']);
+  }
+  return (
+    createRomanNumber(Math.floor(num / 10), ['X', 'L', 'C']) +
+    createRomanNumber(num % 10, ['I', 'V', 'X'])
+  );
 }
 
 /**
@@ -126,8 +150,37 @@ function convertToRomanNumerals(/* num */) {
  *  '10,5'    => 'one zero point five'
  *  '1950.2'  => 'one nine five zero point two'
  */
-function convertNumberToString(/* numberStr */) {
-  throw new Error('Not implemented');
+function convertNumberToString(numberStr) {
+  let res = '';
+  const digitsInStr = [
+    'zero',
+    'one',
+    'two',
+    'three',
+    'four',
+    'five',
+    'six',
+    'seven',
+    'eight',
+    'nine',
+  ];
+  for (let index = 0; index < numberStr.length; index += 1) {
+    const ch = numberStr[index];
+    let str = '';
+    if (ch === '-') {
+      str = 'minus';
+    } else if (ch === '.' || ch === ',') {
+      str = 'point';
+    } else {
+      str = digitsInStr[Number(ch)];
+    }
+    if (res === '') {
+      res = str;
+    } else {
+      res = `${res} ${str}`;
+    }
+  }
+  return res;
 }
 
 /**

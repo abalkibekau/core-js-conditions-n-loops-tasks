@@ -261,8 +261,19 @@ function isContainNumber(num, digit) {
  *  [2, 3, 9, 5] => 2       => 2 + 3 === 5 then balance element is 9 and its index = 2
  *  [1, 2, 3, 4, 5] => -1   => no balance element
  */
-function getBalanceIndex(/* arr */) {
-  throw new Error('Not implemented');
+function getBalanceIndex(arr) {
+  for (let ind = 1; ind < arr.length - 1; ind += 1) {
+    let leftSum = 0;
+    for (let leftInd = 0; leftInd < ind; leftInd += 1) {
+      leftSum += arr[leftInd];
+    }
+    let rightSum = 0;
+    for (let rightInd = ind + 1; rightInd < arr.length; rightInd += 1) {
+      rightSum += arr[rightInd];
+    }
+    if (leftSum === rightSum) return ind;
+  }
+  return -1;
 }
 
 /**
@@ -286,8 +297,40 @@ function getBalanceIndex(/* arr */) {
  *          [10, 9,  8,  7]
  *        ]
  */
-function getSpiralMatrix(/* size */) {
-  throw new Error('Not implemented');
+function getSpiralMatrix(size) {
+  const arr = Array(size);
+  for (let i = 0; i < arr.length; i += 1) {
+    arr[i] = Array(size);
+  }
+  let top = 0;
+  let right = size - 1;
+  let bottom = size - 1;
+  let left = 0;
+  let count = 1;
+  const matrixSize = size * size;
+  while (count <= matrixSize) {
+    for (let i = left; i <= right; i += 1) {
+      arr[top][i] = count;
+      count += 1;
+    }
+    top += 1;
+    for (let i = top; i <= bottom; i += 1) {
+      arr[i][right] = count;
+      count += 1;
+    }
+    right -= 1;
+    for (let i = right; i >= left; i -= 1) {
+      arr[bottom][i] = count;
+      count += 1;
+    }
+    bottom -= 1;
+    for (let i = bottom; i >= top; i -= 1) {
+      arr[i][left] = count;
+      count += 1;
+    }
+    left += 1;
+  }
+  return arr;
 }
 
 /**
@@ -305,8 +348,22 @@ function getSpiralMatrix(/* size */) {
  *    [7, 8, 9]         [9, 6, 3]
  *  ]                 ]
  */
-function rotateMatrix(/* matrix */) {
-  throw new Error('Not implemented');
+function rotateMatrix(matrix) {
+  const arr = Array(matrix.length);
+  const arrRotate = matrix;
+  for (let i = 0; i < matrix.length; i += 1) {
+    arr[i] = Array(matrix.length);
+    for (let j = 0; j < matrix[i].length; j += 1) {
+      arr[i][j] = matrix[i][j];
+    }
+  }
+  for (let i = 0; i < matrix.length; i += 1) {
+    const colInd = matrix.length - i - 1;
+    for (let j = 0; j < matrix[i].length; j += 1) {
+      arrRotate[j][colInd] = arr[i][j];
+    }
+  }
+  return matrix;
 }
 
 /**
